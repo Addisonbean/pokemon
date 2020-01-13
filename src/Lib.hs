@@ -2,5 +2,7 @@ module Lib
     ( someFunc
     ) where
 
+import GameState (testGameState)
+
 someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+someFunc = putStrLn $ show testGameState
