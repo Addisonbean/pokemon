@@ -1,20 +1,18 @@
 module Game
   ( Game(..)
   , testGame
-  , pokemon
   ) where
 
 import Control.Lens (over, makeLenses)
 
-import Pokemon.Pokemon (Pokemon, testPokemon)
+import Player.Player (Player, testPlayer)
 import World.World (World, testWorld)
 
 data Game = Game
-  { _pokemon :: Pokemon
+  { _player :: Player
   , _world :: World
   } deriving (Show)
 makeLenses ''Game
 
-
 testGame :: Game
-testGame = Game testPokemon testWorld
+testGame = Game testPlayer testWorld
