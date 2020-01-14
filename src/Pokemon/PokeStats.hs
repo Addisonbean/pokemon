@@ -2,6 +2,9 @@ module Pokemon.PokeStats
   ( PokeStats(..)
   ) where
 
+import Control.Lens (makeLenses)
+
 data PokeStats = PokeStats
-  { pokeStatHp :: Int
+  { _pokeStatHp :: Int
   } deriving (Show)
+makeLenses ''PokeStats

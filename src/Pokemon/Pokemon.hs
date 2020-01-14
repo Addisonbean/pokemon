@@ -1,20 +1,27 @@
 module Pokemon.Pokemon
   ( Pokemon(..)
   , testPokemon
+  , healPokemon
   ) where
+
+import Control.Lens (over, makeLenses)
 
 import Pokemon.PokeType (PokeType(..))
 import Pokemon.PokeStats (PokeStats(..))
 
 data Pokemon = Pokemon
-  { pokemonType :: PokeType
-  , pokemonHp :: Int
-  , pokemonStats :: PokeStats
+  { _pokemonType :: PokeType
+  , _pokemonHp :: Int
+  , _pokemonStats :: PokeStats
   } deriving (Show)
+makeLenses ''Pokemon
 
 testPokemon :: Pokemon
 testPokemon = Pokemon
-    { pokemonType = Electric
-    , pokemonHp = 1
-    , pokemonStats = PokeStats 1
+    { _pokemonType = Electric
+    , _pokemonHp = 1
+    , _pokemonStats = PokeStats 1
     }
+
+healPokemon :: Int -> Pokemon -> Pokemon
+healPokemon n = over pokemonHp (+n)

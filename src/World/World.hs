@@ -3,11 +3,14 @@ module World.World
   , testWorld
   ) where
 
+import Control.Lens (makeLenses)
+
 import World.Scene.Scene (Scene, testScene)
 
 data World = World
-  { currentScene :: Scene
+  { _currentScene :: Scene
   } deriving (Show)
+makeLenses ''World
 
 testWorld :: World
 testWorld = World testScene

@@ -11,7 +11,7 @@ import Control.Monad.Trans.Random (RandT)
 import System.Random (StdGen)
 
 import Game (Game, pokemon)
-import Pokemon.Pokemon (pokemonHp)
+import Pokemon.Pokemon (healPokemon)
 
 type GameState = StateT Game (RandT StdGen IO)
 
@@ -21,6 +21,7 @@ data Command
   deriving (Show)
 
 -- TODO: use a proper parser
+-- TODO: return `Either String Command` ?
 parseCommand :: String -> Maybe Command
 parseCommand = parseCommand' . words
   where
@@ -33,5 +34,4 @@ execCommand (Heal n) = liftIO $ putStrLn "bouta' heal"
 execCommand NoCommand = return ()
 
 heal :: Int -> GameState ()
-heal n = state $ \g -> ((), g { pokemon = (pokemon g) { pokemonHp = n } })
--- heal n = modify $ over 
+heal n = modify $ over pokemon (healPokemon n)
