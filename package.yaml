@@ -26,6 +26,8 @@ dependencies:
 - lens
 - MonadRandom
 - transformers
+- aeson
+- unordered-containers
 
 library:
   source-dirs: src
@@ -54,3 +56,4 @@ tests:
 
 default-extensions:
 - TemplateHaskell
+- DeriveGeneric

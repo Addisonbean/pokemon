@@ -1,12 +1,13 @@
 module Game
   ( Game(..)
-  , testGame
+  , loadGame
+  , world
   ) where
 
 import Control.Lens (over, makeLenses)
 
 import Player.Player (Player, testPlayer)
-import World.World (World, testWorld)
+import World.World (World, loadWorld)
 
 data Game = Game
   { _player :: Player
@@ -14,5 +15,5 @@ data Game = Game
   } deriving (Show)
 makeLenses ''Game
 
-testGame :: Game
-testGame = Game testPlayer testWorld
+loadGame :: FilePath -> IO (Maybe Game)
+loadGame = fmap (fmap (Game testPlayer)) . loadWorld

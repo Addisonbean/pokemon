@@ -1,11 +1,30 @@
 module World.Scene.Scene
-  (Scene(..)
-  , testScene
+  ( Scene(..)
+  , sceneId
+  , description
   ) where
 
-data Scene = Scene
-  { description :: String
-  } deriving (Show)
+import Control.Lens (makeLenses)
+import Data.Aeson (FromJSON, ToJSON)
+import GHC.Generics (Generic)
 
-testScene :: Scene
-testScene = Scene "hey there"
+data SceneExits = SceneExits
+  { exitLeft :: Maybe String
+  , exitRight :: Maybe String
+  , exitTop :: Maybe String
+  , exitButtom :: Maybe String
+  } deriving (Show, Generic)
+makeLenses ''SceneExits
+
+instance ToJSON SceneExits
+instance FromJSON SceneExits
+
+data Scene = Scene
+  { _sceneId :: String
+  , _description :: String
+  , _exits :: SceneExits
+  } deriving (Show, Generic)
+makeLenses ''Scene
+
+instance ToJSON Scene
+instance FromJSON Scene

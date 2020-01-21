@@ -10,7 +10,7 @@ import Control.Monad.Trans.State (evalStateT)
 import System.Random (getStdGen)
 
 import GameState (GameState, parseCommand, execCommand)
-import Game (testGame)
+import Game (loadGame)
 
 prompt :: String -> IO String
 prompt s = putStr s >> hFlush stdout >> getLine
@@ -22,4 +22,8 @@ eventLoop = do
   eventLoop
 
 runGame :: IO ()
-runGame = getStdGen >>= evalRandT (evalStateT eventLoop testGame) >> return ()
+runGame = do
+  gen <- getStdGen
+  Just game <- loadGame "world_data/scenes.json"
+  evalRandT (evalStateT eventLoop game) gen
+  return ()
