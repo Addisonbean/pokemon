@@ -15,25 +15,40 @@ loadGame :: FilePath -> IO (Maybe Game)
 loadGame f = runMaybeT $ do
   w <- MaybeT $ loadWorld f
   return $ Game
-    { _state = Command
+    { _state = DoCommand
     , _world = w
     , _player = testPlayer
     }
 
-data GameState = Command | Custom (Game -> String -> GameResult) | Done
+data GameState = DoCommand | Custom (Game -> String -> GameResult) | Done
 
 type GameResult = (Maybe String, Game)
 
 actionForState :: GameState -> (Game -> String -> GameResult)
--- somethin' like: actionForState Command = runCommand . parseCommand
-actionForState Command = runCommand
+actionForState DoCommand = \g s ->
+  case parseCommand s of
+    Just cmd -> runCommand g cmd
+    Nothing -> (Just "unknown command", g)
 actionForState (Custom f) = f
 actionForState Done = undefined
 
-runCommand :: Game -> String -> GameResult
-runCommand g "" = (Nothing, g)
-runCommand g "help" = (Just "no help for you", g)
-runCommand g _ = (Just "unknown command", g)
+data Command
+  = Help
+  | Look
+  | EmptyCommand
+
+parseCommand :: String -> Maybe Command
+parseCommand "" = Just EmptyCommand
+parseCommand "help" = Just Help
+parseCommand "h" = Just Help
+parseCommand "look" = Just Look
+parseCommand "l" = Just Look
+parseCommand _ = Nothing
+
+runCommand :: Game -> Command -> GameResult
+runCommand g Help = (Just "no help for you", g)
+runCommand g EmptyCommand = (Nothing, g)
+runCommand g Look = undefined
 
 data Game = Game
   { _state :: GameState
